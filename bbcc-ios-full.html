@@ -68,7 +68,18 @@
         @media (min-width: 768px) { .content { max-width: 600px; margin: 0 auto; } .stats { grid-template-columns: repeat(4, 1fr); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .card, .list { animation: fadeIn 0.3s ease-out; }
-    </style>
+    
+.sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sidebar.active {
+    transform: translateX(0);
+}
+.hamburger {
+    cursor: pointer;
+}
+</style>
 </head>
 <body>
     <div class="status-bar">BBCC RockRMS</div>
@@ -121,5 +132,69 @@
             tab.addEventListener('click', function() { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); this.classList.add('active'); });
         });
     </script>
-</body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    
+    if (hamburger && sidebar) {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.right = '0';
+        overlay.style.bottom = '0';
+        overlay.style.background = 'rgba(0,0,0,0.5)';
+        overlay.style.zIndex = '999';
+        overlay.style.display = 'none';
+        overlay.style.backdropFilter = 'blur(2px)';
+        overlay.addEventListener('click', closeSidebar);
+        document.body.appendChild(overlay);
+        
+        hamburger.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            sidebar.classList.add('active');
+            overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        
+        // Close on escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSidebar();
+        });
+        
+        // Add close button
+        if (!sidebar.querySelector('.sidebar-close')) {
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'sidebar-close';
+            closeBtn.innerHTML = '×';
+            closeBtn.style.position = 'absolute';
+            closeBtn.style.top = '20px';
+            closeBtn.style.right = '20px';
+            closeBtn.style.background = 'none';
+            closeBtn.style.border = 'none';
+            closeBtn.style.fontSize = '28px';
+            closeBtn.style.color = '#666';
+            closeBtn.style.cursor = 'pointer';
+            closeBtn.style.width = '40px';
+            closeBtn.style.height = '40px';
+            closeBtn.style.borderRadius = '20px';
+            closeBtn.style.display = 'flex';
+            closeBtn.style.alignItems = 'center';
+            closeBtn.style.justifyContent = 'center';
+            closeBtn.addEventListener('click', closeSidebar);
+            sidebar.insertBefore(closeBtn, sidebar.firstChild);
+        }
+    }
+});
+</script></body>
 </html>
