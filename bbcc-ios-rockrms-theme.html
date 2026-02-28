@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BBCC • RockRMS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* iOS Modern Design */
+        :root {
+            --ios-blue: #007AFF;
+            --ios-gray-1: #F2F2F7;
+            --ios-gray-2: #E5E5EA;
+            --ios-gray-3: #D1D1D6;
+            --ios-gray-4: #C7C7CC;
+            --ios-gray-5: #8E8E93;
+            --ios-label: #000000;
+            --ios-secondary: #3C3C4399;
+            --bbcc-orange: #EE7625;
+            --bbcc-blue: #0D6EFD;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; background: var(--ios-gray-1); color: var(--ios-label); line-height: 1.5; padding-top: 44px; padding-bottom: 83px; }
+
+        .status-bar { height: 44px; background: var(--bbcc-blue); position: fixed; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 17px; z-index: 1000; }
+        .nav-bar { position: fixed; top: 44px; left: 0; right: 0; height: 44px; background: var(--bbcc-blue); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--space-md); z-index: 999; }
+        .nav-title { color: white; font-size: 17px; font-weight: 600; }
+        .nav-button { background: none; border: none; color: white; font-size: 17px; padding: var(--space-sm); border-radius: var(--radius-sm); cursor: pointer; }
+        .content { padding: var(--space-md); }
+        
+        .card { background: white; border-radius: var(--radius-lg); padding: var(--space-lg); margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        .card:active { transform: scale(0.98); }
+        .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); }
+        .card-title { font-size: 17px; font-weight: 600; }
+        .card-subtitle { font-size: 15px; color: var(--ios-secondary); margin-top: 4px; }
+        
+        .list { background: white; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-md); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .list-item { display: flex; align-items: center; padding: var(--space-md); border-bottom: 0.5px solid var(--ios-gray-2); cursor: pointer; transition: background-color 0.2s; }
+        .list-item:active { background-color: var(--ios-gray-1); }
+        .list-item:last-child { border-bottom: none; }
+        .list-icon { width: 32px; height: 32px; border-radius: var(--radius-md); background: var(--bbcc-blue); color: white; display: flex; align-items: center; justify-content: center; margin-right: var(--space-md); }
+        .list-icon.orange { background: var(--bbcc-orange); }
+        .list-content { flex: 1; }
+        .list-title { font-size: 17px; font-weight: 500; }
+        .list-subtitle { font-size: 15px; color: var(--ios-secondary); margin-top: 2px; }
+        .list-chevron { color: var(--ios-gray-4); font-size: 14px; }
+        
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); margin-top: var(--space-md); }
+        .stat { background: white; border-radius: var(--radius-md); padding: var(--space-md); text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .stat-number { font-size: 28px; font-weight: 700; color: var(--bbcc-blue); line-height: 1; }
+        .stat-label { font-size: 13px; color: var(--ios-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .button { display: flex; align-items: center; justify-content: center; background: var(--bbcc-blue); color: white; border: none; border-radius: var(--radius-md); padding: var(--space-md) var(--space-lg); font-size: 17px; font-weight: 600; width: 100%; margin-top: var(--space-md); cursor: pointer; transition: transform 0.2s; }
+        .button:active { transform: scale(0.98); }
+        .button.orange { background: var(--bbcc-orange); }
+        
+        .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 83px; background: white; border-top: 0.5px solid var(--ios-gray-2); display: flex; }
+        .tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ios-gray-5); text-decoration: none; cursor: pointer; }
+        .tab.active { color: var(--bbcc-blue); }
+        .tab-icon { font-size: 24px; margin-bottom: 4px; }
+        .tab-label { font-size: 10px; font-weight: 500; }
+        
+        @media (min-width: 768px) { .content { max-width: 600px; margin: 0 auto; } .stats { grid-template-columns: repeat(4, 1fr); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card, .list { animation: fadeIn 0.3s ease-out; }
+    </style>
+</head>
+<body>
+    <div class="status-bar">BBCC RockRMS</div>
+    <nav class="nav-bar">
+        <button class="nav-button"><i class="fa fa-bars"></i></button>
+        <div class="nav-title">Dashboard</div>
+        <button class="nav-button"><i class="fa fa-plus"></i></button>
+    </nav>
+    <main class="content">
+        <div class="card">
+            <div class="card-header">
+                <div><div class="card-title">Welcome to BBCC</div><div class="card-subtitle">Modern church management</div></div>
+                <i class="fa fa-hand-peace-o" style="color: var(--bbcc-orange); font-size: 24px;"></i>
+            </div>
+            <p style="color: var(--ios-secondary); margin-bottom: var(--space-md);">Everything you need to manage your church community, designed for iOS.</p>
+            <button class="button"><i class="fa fa-play-circle" style="margin-right: 8px;"></i>Get Started</button>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">Today's Actions</div></div>
+            <div class="list">
+                <div class="list-item"><div class="list-icon"><i class="fa fa-calendar"></i></div><div class="list-content"><div class="list-title">Sunday Service</div><div class="list-subtitle">9:00 AM • Main Sanctuary</div></div><i class="fa fa-chevron-right list-chevron"></i></div>
+                <div class="list-item"><div class="list-icon orange"><i class="fa fa-users"></i></div><div class="list-content"><div class="list-title">Small Groups</div><div class="list-subtitle">7:00 PM • Various locations</div></div><i class="fa fa-chevron-right list-chevron"></i></div>
+                <div class="list-item"><div class="list-icon"><i class="fa fa-envelope"></i></div><div class="list-content"><div class="list-title">Messages</div><div class="list-subtitle">3 unread • 2 urgent</div></div><i class="fa fa-chevron-right list-chevron"></i></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header"><div class="card-title">Community Overview</div></div>
+            <div class="stats">
+                <div class="stat"><div class="stat-number">1,247</div><div class="stat-label">Members</div></div>
+                <div class="stat"><div class="stat-number">42</div><div class="stat-label">Groups</div></div>
+                <div class="stat"><div class="stat-number">18</div><｜DSML｜parameter>
